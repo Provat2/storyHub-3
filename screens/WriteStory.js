@@ -1,20 +1,32 @@
 import React from 'react';
 import { TextInput, StyleSheet, Text, View, TouchableOpacity, Button, Touchable} from 'react-native';
 import { Value } from 'react-native-reanimated';
+import db from '../config'
+import firebase from 'firebase'
 
 export default class WriteStory extends React.Component{
     constructor(){
         super();
         this.state = {
-            title: '',
-            author: '',
-            story: ''
+            title: 'hello',
+            author: 'hi',
+            story: 'bye'
         }
     }   
 
+    submitText = ()=> {
+        var transactionMessage = 'Your Story Has Been Submitted';
+        ToastAndroid.show(transactionMessage, ToastAndroid.SHORT);
+        db.collection('stories').add({
+            title: this.state.title,
+            author: this.state.author,
+            story: this.state.story
+        })
+    }
+
     render(){
         return(
-            <View style={styles.container}>
+            <KeyAvoidingView style={styles.container}>
                 <Text style={styles.heads}>Write A Story</Text>
                 <View>
                     <TextInput
@@ -38,7 +50,7 @@ export default class WriteStory extends React.Component{
                     />
                 </View>
                 <TouchableOpacity style={styles.buttons}><Text style={styles.texts}>Submit</Text></TouchableOpacity>
-            </View>
+            </KeyAvoidingView>
         );
     }
 }
